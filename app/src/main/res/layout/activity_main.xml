@@ -1,0 +1,173 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout
+    android:id="@+id/rootLayout"
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:padding="16dp">
+
+    <LinearLayout
+        android:id="@+id/searchRow"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:gravity="center_vertical"
+        android:orientation="horizontal"
+        android:layout_marginTop="40dp"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent">
+
+        <EditText
+            android:id="@+id/getCity"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:hint="Enter A Location: "
+            android:inputType="text" />
+
+        <Button
+            android:id="@+id/btnSearch"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="8dp"
+            android:text="Search Location" />
+    </LinearLayout>
+
+    <GridLayout
+        android:id="@+id/ForcastGrid"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="72dp"
+        android:columnCount="3"
+        android:rowCount="6"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/searchRow">
+
+        <TextView
+            android:id="@+id/CurrentState"
+            android:layout_width="139dp"
+            android:layout_height="wrap_content"
+            android:layout_row="0"
+            android:layout_marginTop="25dp"
+            android:text="Todays Forcast"
+            android:textSize="18sp" />
+
+        <TextView
+            android:id="@+id/CurrentDescription"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_row="1"
+            android:layout_column="0"
+            android:layout_marginTop="25dp"
+            android:text="Description"
+            android:textSize="18sp" />
+
+        <TextView
+            android:id="@+id/CurrentTemperature"
+            android:layout_width="125dp"
+            android:layout_row="1"
+            android:layout_column="1"
+            android:layout_marginTop="25dp"
+            android:text="Temperature"
+            android:textSize="18sp" />
+
+        <TextView
+            android:id="@+id/CurrentWind"
+            android:layout_width="125dp"
+            android:layout_row="1"
+            android:layout_column="2"
+            android:layout_marginTop="25dp"
+            android:text="Wind"
+            android:textSize="18sp" />
+
+        <TextView
+            android:id="@+id/day1"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_row="2"
+            android:layout_column="0"
+            android:layout_marginTop="25dp"
+            android:text="Tomorrow:"
+            android:textSize="18sp" />
+
+
+        <TextView
+            android:id="@+id/day1Temperature"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_row="3"
+            android:layout_column="1"
+            android:layout_marginTop="25dp"
+            android:text="Temperature"
+            android:textSize="18sp" />
+
+        <TextView
+            android:id="@+id/day1Wind"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_row="3"
+            android:layout_column="2"
+            android:layout_marginTop="25dp"
+            android:text="Wind"
+            android:textSize="18sp" />
+
+        <TextView
+            android:id="@+id/day2"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_row="4"
+            android:layout_column="0"
+            android:layout_marginTop="25dp"
+            android:text="Day After:"
+            android:textSize="18sp" />
+
+
+        <TextView
+            android:id="@+id/day2Temperature"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_row="5"
+            android:layout_column="1"
+            android:layout_marginTop="25dp"
+            android:text="Temperature"
+            android:textSize="18sp" />
+
+        <TextView
+            android:id="@+id/day2Wind"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_row="5"
+            android:layout_column="2"
+            android:layout_marginTop="25dp"
+            android:text="Wind"
+            android:textSize="18sp" />
+
+
+    </GridLayout>
+
+    <Button
+        android:id="@+id/btnViewFavorites"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="108dp"
+        android:text="View Favorites"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="1.0"
+        app:layout_constraintStart_toStartOf="parent" />
+
+    <Button
+        android:id="@+id/btnSaveFavorite"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="108dp"
+        android:text="Save to Favorites"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintStart_toStartOf="parent" />
+
+</androidx.constraintlayout.widget.ConstraintLayout>

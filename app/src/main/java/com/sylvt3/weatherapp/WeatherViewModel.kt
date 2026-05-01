@@ -99,12 +99,12 @@ class WeatherViewModel(application: Application) : AndroidViewModel(application)
                         val data = WeatherData(
                             cityName,
                             description,
-                            "Temperature: \n$currentTemp°F",
-                            "Wind: \n$currentWindSpeed mph",
-                            "High: \n${temps.optDouble(1)}°F",
-                            "Wind: \n${winds.optDouble(1)} mph",
-                            "High: \n${temps.optDouble(2)}°F",
-                            "Wind: \n${winds.optDouble(2)} mph"
+                            "Temperature: $currentTemp°F",
+                            "Wind: $currentWindSpeed mph",
+                            "High: ${temps.optDouble(1)}°F",
+                            "Wind: ${winds.optDouble(1)} mph",
+                            "High: ${temps.optDouble(2)}°F",
+                            "Wind: ${winds.optDouble(2)} mph"
                         )
 
                         weatherData.value = data

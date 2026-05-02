@@ -6,10 +6,11 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.lifecycle.ViewModelProvider
 import android.content.Intent
-import androidx.core.content.edit
+import androidx.lifecycle.lifecycleScope
+import kotlinx.coroutines.launch
 
-class MainActivity : AppCompatActivity() {
-
+class MainActivity : AppCompatActivity()
+{
     private lateinit var rootLayout: ConstraintLayout
     private lateinit var getCity: EditText
     private lateinit var btnSearch: Button
@@ -18,7 +19,6 @@ class MainActivity : AppCompatActivity() {
     private lateinit var currentDescription: TextView
     private lateinit var currentTemperature: TextView
     private lateinit var currentWind: TextView
-
     private lateinit var weatherImage: ImageView
 
     private lateinit var day1Temperature: TextView
@@ -28,16 +28,17 @@ class MainActivity : AppCompatActivity() {
     private lateinit var day2Wind: TextView
 
     private lateinit var btnSaveFavorite: Button
-
     private lateinit var btnViewFavorites: Button
 
     private lateinit var weatherViewModel: WeatherViewModel
+    private lateinit var database: WeatherDatabase
 
     private var savedCity = ""
     private var savedDescription = ""
     private var savedTemperature = ""
 
-    override fun onCreate(savedInstanceState: Bundle?) {
+    override fun onCreate(savedInstanceState: Bundle?)
+    {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
 
@@ -49,6 +50,7 @@ class MainActivity : AppCompatActivity() {
         currentDescription = findViewById(R.id.currentDescription)
         currentTemperature = findViewById(R.id.currentTemperature)
         currentWind = findViewById(R.id.currentWind)
+
         weatherImage = findViewById(R.id.weatherImage)
 
         day1Temperature = findViewById(R.id.day1Temperature)
@@ -61,8 +63,10 @@ class MainActivity : AppCompatActivity() {
         btnViewFavorites = findViewById(R.id.btnViewFavorites)
 
         weatherViewModel = ViewModelProvider(this)[WeatherViewModel::class.java]
+        database = WeatherDatabase.getDatabase(this)
 
-        weatherViewModel.weatherData.observe(this) { data ->
+        weatherViewModel.weatherData.observe(this)
+        { data ->
             currentState.text = "${data.cityName}'s Forecast"
             currentDescription.text = data.description
             currentTemperature.text = data.currentTemperature
@@ -77,18 +81,18 @@ class MainActivity : AppCompatActivity() {
             savedCity = data.cityName
             savedDescription = data.description
             savedTemperature = data.currentTemperature
+
             updateBackground(data.description)
             updateWeatherImage(data.description)
         }
 
-        weatherViewModel.errorMessage.observe(this) { message ->
-            clearFields()
+        weatherViewModel.errorMessage.observe(this) { message -> clearFields()
             currentState.text = message
             currentDescription.text = "Please try again"
             rootLayout.setBackgroundColor(getColor(R.color.white))
         }
 
-        btnSearch.setOnClickListener{
+        btnSearch.setOnClickListener {
             val city = getCity.text.toString().trim()
 
             if (city.isEmpty()) {
@@ -104,7 +108,7 @@ class MainActivity : AppCompatActivity() {
             }
         }
 
-        btnSaveFavorite.setOnClickListener{
+        btnSaveFavorite.setOnClickListener {
             if (savedCity.isEmpty())
             {
                 Toast.makeText(this, "Search for weather first", Toast.LENGTH_SHORT).show()
@@ -123,11 +127,24 @@ class MainActivity : AppCompatActivity() {
         }
     }
 
+    private fun saveFavorite(city: String, description: String, temperature: String) {
+        lifecycleScope.launch {
+            val favorite = FavoriteWeather(
+                city = city,
+                description = description,
+                temperature = temperature
+            )
+
+            database.favoriteDao().insertFavorite(favorite)
+        }
+    }
+
     private fun updateBackground(description: String)
     {
         val desc = description.lowercase()
 
-        val color = when {
+        val color = when
+        {
             desc.contains("sun") || desc.contains("clear") -> getColor(R.color.merigold)
             desc.contains("cloud") -> getColor(R.color.cloud)
             desc.contains("rain") -> getColor(R.color.cloudy_blue)
@@ -138,10 +155,12 @@ class MainActivity : AppCompatActivity() {
         rootLayout.setBackgroundColor(color)
     }
 
-    private fun updateWeatherImage(description: String) {
+    private fun updateWeatherImage(description: String)
+    {
         val desc = description.lowercase()
 
-        val image = when {
+        val image = when
+        {
             desc.contains("sun") || desc.contains("clear") -> R.drawable.sunny
             desc.contains("cloud") -> R.drawable.cloudy
             desc.contains("rain") || desc.contains("drizzle") -> R.drawable.storm
@@ -166,28 +185,5 @@ class MainActivity : AppCompatActivity() {
         day2Wind.text = ""
 
         weatherImage.setImageResource(R.drawable.ic_launcher_foreground)
-    }
-
-    private fun saveFavorite(city: String, description: String, temperature: String)
-    {
-        val sharedPreferences = getSharedPreferences("favorites", MODE_PRIVATE)
-
-        val oldFavorites = sharedPreferences.getString("favoriteList", "")
-
-        val newFavorite = "$city - $description - $temperature"
-
-        val updatedFavorites = if (oldFavorites == "")
-        {
-            newFavorite
-        }
-
-        else
-        {
-            oldFavorites + "\n" + newFavorite
-        }
-
-        sharedPreferences.edit {
-            putString("favoriteList", updatedFavorites)
-        }
     }
 }

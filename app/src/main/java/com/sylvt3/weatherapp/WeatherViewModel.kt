@@ -8,23 +8,22 @@ import com.android.volley.RequestQueue
 import com.android.volley.toolbox.JsonObjectRequest
 import com.android.volley.toolbox.Volley
 
-class WeatherViewModel(application: Application) : AndroidViewModel(application) {
+class WeatherViewModel(application: Application) : AndroidViewModel(application)
+{
 
     val weatherData = MutableLiveData<WeatherData>()
     val errorMessage = MutableLiveData<String>()
 
     private val queue: RequestQueue = Volley.newRequestQueue(application)
 
-    fun fetchWeather(city: String) {
+    fun fetchWeather(city: String)
+    {
         val safeCity = city.replace(" ", "%20")
+
         val geoUrl = "https://geocoding-api.open-meteo.com/v1/search?name=$safeCity&count=1"
 
-        val geoRequest = JsonObjectRequest(
-            Request.Method.GET,
-            geoUrl,
-            null,
-            { geoResponse ->
-                val results = geoResponse.optJSONArray("results")
+        val geoRequest = JsonObjectRequest(Request.Method.GET, geoUrl, null,
+            { geoResponse -> val results = geoResponse.optJSONArray("results")
 
                 if (results == null || results.length() == 0)
                 {
@@ -42,19 +41,15 @@ class WeatherViewModel(application: Application) : AndroidViewModel(application)
                     fetchWeatherByCoordinates(latitude, longitude, cityName)
                 }
             },
-            {
-                errorMessage.value = "Location error"
-            }
+            { errorMessage.value = "Location error" }
         )
 
         queue.add(geoRequest)
+
     }
 
-    private fun fetchWeatherByCoordinates(
-        latitude: Double,
-        longitude: Double,
-        cityName: String
-    ) {
+    private fun fetchWeatherByCoordinates(latitude: Double, longitude: Double, cityName: String)
+    {
         val weatherUrl =
             "https://api.open-meteo.com/v1/forecast" +
                     "?latitude=$latitude" +
@@ -101,26 +96,26 @@ class WeatherViewModel(application: Application) : AndroidViewModel(application)
                             description,
                             "Temperature: $currentTemp°F",
                             "Wind: $currentWindSpeed mph",
-                            "High: ${temps.optDouble(1)}°F",
-                            "Wind: ${winds.optDouble(1)} mph",
-                            "High: ${temps.optDouble(2)}°F",
-                            "Wind: ${winds.optDouble(2)} mph"
+                            "Tomorrow's High: ${temps.optDouble(1)}°F",
+                            "Tomorrow's Wind: ${winds.optDouble(1)} mph",
+                            "Next Day High: ${temps.optDouble(2)}°F",
+                            "Next Day Wind: ${winds.optDouble(2)} mph"
                         )
 
                         weatherData.value = data
                     }
                 }
             },
-            {
-                errorMessage.value = "Network error"
-            }
+            { errorMessage.value = "Network error" }
         )
 
         queue.add(weatherRequest)
     }
 
-    private fun getWeatherDescription(code: Int): String {
-        return when (code) {
+    private fun getWeatherDescription(code: Int): String
+    {
+        return when (code)
+        {
             0 -> "Clear"
             1, 2 -> "Mostly clear"
             3 -> "Cloudy"
@@ -130,6 +125,7 @@ class WeatherViewModel(application: Application) : AndroidViewModel(application)
             71, 73, 75 -> "Snow"
             80, 81, 82 -> "Rain showers"
             95 -> "Thunderstorm"
+
             else -> "Unknown"
         }
     }

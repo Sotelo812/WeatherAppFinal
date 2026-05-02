@@ -2,51 +2,53 @@ package com.sylvt3.weatherapp
 
 import android.os.Bundle
 import android.widget.Button
-import android.widget.TextView
-import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
+import androidx.lifecycle.lifecycleScope
+import androidx.recyclerview.widget.LinearLayoutManager
+import androidx.recyclerview.widget.RecyclerView
+import kotlinx.coroutines.launch
 
 class FavoritesActivity : AppCompatActivity() {
 
-    private lateinit var favoritesText: TextView
-    private lateinit var btnClearFavorites: Button
+    private lateinit var database: WeatherDatabase
+    private lateinit var recyclerView: RecyclerView
+    private lateinit var adapter: FavoriteAdapter
     private lateinit var btnBack: Button
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_favorites)
 
-        favoritesText = findViewById(R.id.favoritesText)
-        btnClearFavorites = findViewById(R.id.btnClearFavorites)
+        database = WeatherDatabase.getDatabase(this)
+
         btnBack = findViewById(R.id.btnBack)
+        recyclerView = findViewById(R.id.favoritesRecyclerView)
 
-        loadFavorites()
-
-        btnClearFavorites.setOnClickListener {
-            val sharedPreferences = getSharedPreferences("favorites", MODE_PRIVATE)
-            val editor = sharedPreferences.edit()
-
-            editor.remove("favoriteList")
-            editor.apply()
-
-            favoritesText.text = "No favorites saved"
-
-            Toast.makeText(this, "Favorites deleted", Toast.LENGTH_SHORT).show()
+        adapter = FavoriteAdapter(emptyList()) { favorite ->
+            deleteFavorite(favorite)
         }
+
+        recyclerView.layoutManager = LinearLayoutManager(this)
+        recyclerView.adapter = adapter
 
         btnBack.setOnClickListener {
             finish()
         }
+
+        loadFavorites()
     }
 
     private fun loadFavorites() {
-        val sharedPreferences = getSharedPreferences("favorites", MODE_PRIVATE)
-        val favorites = sharedPreferences.getString("favoriteList", "")
+        lifecycleScope.launch {
+            val favorites = database.favoriteDao().getAllFavorites()
+            adapter.updateFavorites(favorites)
+        }
+    }
 
-        if (favorites == "") {
-            favoritesText.text = "No favorites saved"
-        } else {
-            favoritesText.text = favorites
+    private fun deleteFavorite(favorite: FavoriteWeather) {
+        lifecycleScope.launch {
+            database.favoriteDao().deleteFavorite(favorite)
+            loadFavorites()
         }
     }
 }

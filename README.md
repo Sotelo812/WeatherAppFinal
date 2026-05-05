@@ -7,3 +7,7 @@ If the app is not working, here is an APK of the app, and if that also does not 
 APK: https://drive.google.com/drive/folders/1Oi0WN5m_AQdO-gCmxpa82s0c3WWS52KT?usp=sharing
 
 YouTube: https://youtu.be/Jn1nAQrz5BA
+
+How the app works:
+
+This app takes the text entered in the search bar and formats it so the first API, https://open-meteo.com/en/docs/geocoding-api. This API takes a location name and gets the geo location data, including latitude, longitude, area codes, elevation, etc. This is important for two things: one, the second API uses lat and longitude to retrieve weather data, and two, it is very accurate. The next API, https://open-meteo.com/. This API is very powerful and will return accurate weather data for a precise location. So the first API will feed the next API, which is then displayed to the views. The nice thing about these APIs is that they both come from the same place, Open-Metro, which has fantastic documentation and is free, which you can't beat that price.

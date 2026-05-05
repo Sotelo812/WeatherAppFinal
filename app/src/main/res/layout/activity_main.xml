@@ -5,13 +5,19 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:background="@color/charcoal"
     android:padding="24dp">
 
     <Button
         android:id="@+id/btnViewFavorites"
         android:layout_width="32dp"
         android:layout_height="32dp"
-        android:contentDescription="Menu"
+        android:backgroundTint="@color/light_green"
+        app:iconTint="@color/white"
+        app:iconGravity="textStart"
+        app:icon="@drawable/menu"
+        app:iconPadding="0dp"
+        android:gravity="center"
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintStart_toStartOf="parent" />
 
@@ -19,12 +25,18 @@
         android:id="@+id/btnSaveFavorite"
         android:layout_width="32dp"
         android:layout_height="32dp"
-        android:contentDescription="Favorite"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintEnd_toEndOf="parent" />
+        android:backgroundTint="@color/light_green"
+        app:iconTint="@color/white"
+        app:iconGravity="textStart"
+        app:icon="@drawable/heart"
+        app:iconPadding="0dp"
+        android:gravity="center"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
 
     <EditText
         android:id="@+id/getCity"
+        android:textColor="@color/white"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:hint="Enter Location"
@@ -37,6 +49,8 @@
 
     <Button
         android:id="@+id/btnSearch"
+        android:backgroundTint="@color/light_green"
+        android:textColor="@color/white"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="Search"
@@ -46,6 +60,7 @@
 
     <TextView
         android:id="@+id/dayOfWeekAndMonth"
+        android:textColor="@color/white"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="56dp"
@@ -58,6 +73,7 @@
 
     <TextView
         android:id="@+id/currentState"
+        android:textColor="@color/white"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="4dp"
@@ -70,6 +86,7 @@
 
     <TextView
         android:id="@+id/time"
+        android:textColor="@color/white"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="8dp"
@@ -93,6 +110,7 @@
 
     <TextView
         android:id="@+id/currentTemperature"
+        android:textColor="@color/white"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="80dp"
@@ -104,6 +122,7 @@
 
     <TextView
         android:id="@+id/currentWind"
+        android:textColor="@color/white"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="Wind"
@@ -114,6 +133,7 @@
 
     <TextView
         android:id="@+id/currentDescription"
+        android:textColor="@color/white"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="Description"
@@ -125,6 +145,7 @@
 
     <View
         android:id="@+id/divider"
+        android:backgroundTint="@color/white"
         android:layout_width="0dp"
         android:layout_height="1dp"
         android:layout_marginTop="100dp"
@@ -136,6 +157,7 @@
 
     <TextView
         android:id="@+id/day1Temperature"
+        android:textColor="@color/white"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:text="Tomorrow Temp"
@@ -147,6 +169,7 @@
 
     <TextView
         android:id="@+id/day1Wind"
+        android:textColor="@color/white"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:text="Tomorrow Wind"
@@ -157,6 +180,7 @@
 
     <TextView
         android:id="@+id/day2Temperature"
+        android:textColor="@color/white"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:text="Next Day Temp"
@@ -168,6 +192,7 @@
 
     <TextView
         android:id="@+id/day2Wind"
+        android:textColor="@color/white"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:text="Next Day Wind"
@@ -178,6 +203,7 @@
 
     <View
         android:id="@+id/verticalDivider"
+        android:backgroundTint="@color/white"
         android:layout_width="1dp"
         android:layout_height="40dp"
         android:background="@color/black"

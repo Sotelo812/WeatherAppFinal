@@ -15,6 +15,9 @@ class MainActivity : AppCompatActivity()
     private lateinit var getCity: EditText
     private lateinit var btnSearch: Button
 
+    private lateinit var dayOfWeekAndMonth: TextView
+    private lateinit var time: TextView
+
     private lateinit var currentState: TextView
     private lateinit var currentDescription: TextView
     private lateinit var currentTemperature: TextView
@@ -46,6 +49,9 @@ class MainActivity : AppCompatActivity()
         getCity = findViewById(R.id.getCity)
         btnSearch = findViewById(R.id.btnSearch)
 
+        dayOfWeekAndMonth = findViewById(R.id.dayOfWeekAndMonth)
+        time = findViewById(R.id.time)
+
         currentState = findViewById(R.id.currentState)
         currentDescription = findViewById(R.id.currentDescription)
         currentTemperature = findViewById(R.id.currentTemperature)
@@ -65,6 +71,8 @@ class MainActivity : AppCompatActivity()
         weatherViewModel = ViewModelProvider(this)[WeatherViewModel::class.java]
         database = WeatherDatabase.getDatabase(this)
 
+        startClock()
+
         weatherViewModel.weatherData.observe(this)
         { data ->
             currentState.text = "${data.cityName}'s Forecast"
@@ -82,14 +90,12 @@ class MainActivity : AppCompatActivity()
             savedDescription = data.description
             savedTemperature = data.currentTemperature
 
-            updateBackground(data.description)
             updateWeatherImage(data.description)
         }
 
         weatherViewModel.errorMessage.observe(this) { message -> clearFields()
             currentState.text = message
             currentDescription.text = "Please try again"
-            rootLayout.setBackgroundColor(getColor(R.color.white))
         }
 
         btnSearch.setOnClickListener {
@@ -127,6 +133,28 @@ class MainActivity : AppCompatActivity()
         }
     }
 
+    private fun updateDateTime()
+    {
+        val currentTime = System.currentTimeMillis()
+
+        val dateFormat = java.text.SimpleDateFormat("EEEE, MMM d", java.util.Locale.getDefault())
+        val timeFormat = java.text.SimpleDateFormat("hh:mm a", java.util.Locale.getDefault())
+
+        dayOfWeekAndMonth.text = dateFormat.format(currentTime)
+        time.text = timeFormat.format(currentTime)
+    }
+
+    private fun startClock() {
+        val handler = android.os.Handler(mainLooper)
+        val runnable = object : Runnable {
+            override fun run() {
+                updateDateTime()
+                handler.postDelayed(this, 60000) // update every minute
+            }
+        }
+        handler.post(runnable)
+    }
+
     private fun saveFavorite(city: String, description: String, temperature: String) {
         lifecycleScope.launch {
             val favorite = FavoriteWeather(
@@ -137,22 +165,6 @@ class MainActivity : AppCompatActivity()
 
             database.favoriteDao().insertFavorite(favorite)
         }
-    }
-
-    private fun updateBackground(description: String)
-    {
-        val desc = description.lowercase()
-
-        val color = when
-        {
-            desc.contains("sun") || desc.contains("clear") -> getColor(R.color.merigold)
-            desc.contains("cloud") -> getColor(R.color.cloud)
-            desc.contains("rain") -> getColor(R.color.cloudy_blue)
-            desc.contains("snow") -> getColor(R.color.white)
-            else -> getColor(R.color.white)
-        }
-
-        rootLayout.setBackgroundColor(color)
     }
 
     private fun updateWeatherImage(description: String)
